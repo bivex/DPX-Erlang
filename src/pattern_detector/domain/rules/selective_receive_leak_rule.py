@@ -24,7 +24,7 @@ class SelectiveReceiveLeakRule(BasePatternRule):
                     body = fn.full_body
                     # Check if receive has 'after' or catch-all '_'
                     has_after = "after" in body
-                    has_catch_all = "_ ->" in body or "_Unexpected ->" in body or "Other ->" in body
+                    has_catch_all = bool(re.search(r"(?:^|\n|\s)(?:_[a-zA-Z0-9_]*|[A-Z][a-zA-Z0-9_]*)\s*->", body))
                     if not has_after and not has_catch_all and "loop(" in body:
                         evidences = [
                             Evidence(
